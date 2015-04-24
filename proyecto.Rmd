@@ -1,4 +1,3 @@
-
 # First of all, I call all the libraries we are going to need to make de proyect:
 
 # Data input-output library:
@@ -84,6 +83,11 @@ modelFit6 = train(classe ~ ., method="nb", data=training4)
 modelFit6v2 = train(classe ~ ., method="nb", data=training5)
 
 
+# And finally I fit the model using prediction with bagging:
+modelFit8 = train(classe ~ ., method="treebag", data=training4)
+
+
+
 # Now we can test our diferent models using the testing data:
 pred3 = predict(modelFit3, newdata=testing)
 pred3v2 = predict(modelFit3v2, newdata=testing)
@@ -93,6 +97,9 @@ pred5v2 = predict(modelFit5v2, newdata=testing)
 
 pred6 = predict(modelFit6, newdata=testing)
 pred6v2 = predict(modelFit6v2, newdata=testing)
+
+pred8 = predict(modelFit8, newdata=testing)
+
 
 
 # We evaluate our models using the confusion matrix. For each prediction we show the accuracy of the model and
@@ -106,9 +113,13 @@ result5v2 = confusionMatrix(pred5v2, testing$classe) # Accuracy : 0.59  - Out of
 result6 = confusionMatrix(pred6, testing$classe) # Accuracy : 0.74 - Out of sample error = 0.26
 result6v2 = confusionMatrix(pred6v2, testing$classe) # Accuracy : 0.71 - Out of sample error = 0.29
 
+# This bagging model has actually the best accuracy, so that is the reason we decide to use it for the final answer
+result8 = confusionMatrix(pred8, testing$classe) # Accuracy : 0.96 - Out of sample error = 0.04
+
+
 
 # Now I use the best of our model to test the 20 original examples to test (original plm-testing data)
-pred_final = predict(modelFit6, newdata=plm_testing)
+pred_final = predict(modelFit8, newdata=plm_testing)
 pred_final
 
 
@@ -116,8 +127,9 @@ pred_final
 # and without eliminating variables with high correlation. It seems to work better if we only eliminate
 # the variables with missing values.
 training4_final = plm_training[, c(37:45, 46:49, 60:68, 84:86, 113:121, 122:124, 151:159, 160)]
-modelFit6_final = train(classe ~ ., method="nb", data=training4_final)
-pred_final_v2 = predict(modelFit6_final, newdata=plm_testing)
+modelFit8_final = train(classe ~ ., method="treebag", data=training4_final)
+pred_final_v2 = predict(modelFit8_final, newdata=plm_testing)
 
 # And these are the predictions we are going to send as the best of our models:
 pred_final_v2
+
