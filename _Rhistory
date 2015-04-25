@@ -1,0 +1,512 @@
+cartera_output[[nombre_columna_bs]][fin_ventana]
+} else {
+cartera_output[[nombre_columna_w]][fin_ventana] = 0
+}
+} #end for
+#Calculo los rendimientos acumulados de las estrategias día a dia:
+if (fin_ventana >= (rolling+1))
+{
+#inicializamos variables:
+rto_sigma = 0
+#bucle que recorre todos los pesos:
+for (j in 1:num_activos)
+{
+nombre_peso = paste0("w", j)
+nombre_rto = paste0("r", j)
+rto_sigma = rto_sigma +
+(cartera_output[[nombre_peso]][fin_ventana-1] * cartera_output[[nombre_rto]][fin_ventana])
+}
+cartera_output[["Rto_Sigma"]][fin_ventana] = rto_sigma
+cartera_output[["Acum_Cartera_Sigma"]][fin_ventana] = cartera_output[["Acum_Cartera_Sigma"]][fin_ventana-1] *
+(1 + rto_sigma)
+} #end if
+ini_ventana = ini_ventana + 1
+fin_ventana = fin_ventana + 1
+} #END WHILE: recorre todas las posibles ventanas de n semanas hasta fin de la serie
+####################################### FIN BUCLE FRONTERA EFICIENTE #######################################
+#pinta la frontera eficiente de un portfolio
+#frontierPlot(frontera, frontier = "upper")
+#pinta simulación por Monte Carlo de todos los posibles portfolios
+#monteCarloPoints(frontera)
+#pinta las diferentes franjas de pesos de portfolio para cada combinación de riesgo-return de la frontera eficiente
+#weightsPlot(frontera)
+#pinta el retorno en funcion de la distribución de pesos en el portfolio y la combinación riesgo-return
+#de la frontera eficiente
+#weightedReturnsPlot(frontera)
+########################################## SALIDA DE OUTPUTS ##########################################
+cartera_output$FECHA = as.character(cartera_output$FECHA)
+sigma_output$FECHA = as.character(sigma_output$FECHA)
+#sigma_output = sigma_output[1:100]
+#creo e inserto en la hoja de cálculo salida.xls todos los data.frame's de salida
+canal_out <- odbcConnectExcel("salida.xls", readOnly = FALSE)
+if (length(sqlTables(canal_out)$TABLE_NAME) == 0) #si no hay tablas en el canal las creo por primera vez...
+{
+sqlSave(canal_out, cartera_output, append=FALSE)
+sqlSave(canal_out, sigma_output, append=FALSE)
+sqlSave(canal_out, parametros, append=FALSE)
+} else { # si hay tablas en el canal las actualizo...
+sqlUpdate(canal_out, cartera_output)
+sqlUpdate(canal_out, sigma_output)
+sqlUpdate(canal_out, parametros)
+}
+odbcCloseAll()
+#################################### FIN ##########################################
+if(v_error == 0)
+{
+print("Programa ejecutado con éxito.")
+} else {
+print("ERROR en tiempo de ejecución.")
+}
+install.packages("kernlab")
+library(caret)
+library(kernlab)
+data(spam)
+spam
+head(spam)
+spam$your[spam$type=="nonspam"]
+density(spam$your[spam$type=="nonspam"])
+plot( density(spam$your[spam$type=="nonspam"]), COL="blue", main="", xlab="Frecuenci of 'your'" )
+plot( density(spam$your[spam$type=="nonspam"]), col="blue", main="", xlab="Frecuenci of 'your'" )
+plot( density(spam$your[spam$type=="nonspam"]), col="green", main="", xlab="Frecuenci of 'your'" )
+lines( density(spam$your[spam$type=="spam"]), col="red" )
+plot( density(spam$your[spam$type=="nonspam"]), col="blue", main="", xlab="Frecuenci of 'your'" )
+lines( density(spam$your[spam$type=="spam"]), col="red" )
+abline(v=0.5, col="black")
+ifelse(spam$your > 0.5, "spam", "nonspam")
+prediccion = ifelse(spam$your > 0.5, "spam", "nonspam")
+length(prediccion)
+length(spam$your)
+table(prediccion, spam$type)
+table(prediccion, spam$type)/length(spam$type)
+data(spam)
+spam
+set.seed(333)
+333
+prueba = set.seed(333)
+prueba
+dim(spam)[1]
+sample(dim(spam)[1], size=10)
+spam[sample(dim(spam)[1], size=10), ]
+sample(dim(spam)[1], size=10)
+spam[sample(dim(spam)[1], size=10), ]
+smallSpam = spam[sample(dim(spam)[1], size=10), ]
+smallSpam$type == "spam"
+(smallSpam$type == "spam")*1
+(smallSpam$type == "spam")*1 + 1
+smallSpam
+spamLabel
+spamLabel = (smallSpam$type == "spam")*1 + 1
+plot(smallSpam$capitalAve, col=spamLabel)
+smallSpam$capitalAve
+spamLabel
+rule2 = function(x){
+prediccion = rep(NA, length(x))
+prediccion[x > 2.8] = "spam"
+prediccion[x <= 2.8] = "nonspam"
+return(prediccion)
+}
+smallSpam$capitalAve
+rule2(smallSpam$capitalAve)
+smallSpam$type
+smallSpam
+table(rule2(smallSpam$capitalAve), smallSpam$type)
+class(rule2(smallSpam$capitalAve))
+class(smallSpam$type)
+install.packages("QSARdata")
+install.packages("MASS")
+library(fAssets)
+library(fPortfolio)
+library(fAssets)
+library(fPortfolio)
+#machine learning:
+library(caret)
+library(kernlab)
+install.packages("gbm")
+install.packages("mda")
+install.packages("rpart")
+install.packages("RWeka")
+install.packages("caTools")
+install.packages("C:/Users/roman.gonzalez/Downloads/QSARdata_1.3.zip", repos = NULL)
+data(spam)
+spam
+head(spam)
+data&type
+spam$type
+dim(spam$type)
+length(spam$type)
+inTrain = createDataPartition(y = spam$type, p=0.75, list=FALSE)
+inTrain
+head(inTrain)
+inTrain
+head(inTrain)
+head(spam)
+spam$type
+dim(inTrain)
+dim(-inTrain)
+head(inTrain)
+training = spam[inTrain,]
+head(training)
+dim(training)
+testing = spam[-inTrain,]
+head(testing)
+dim(testing)
+dim(training)
+dim(spam)
+3451+1150
+head(inTrain)
+head(-inTrain)
+c(1:20)
+prueba = c(1:20)
+prueba
+prueba = spam[1:5,]
+prueba
+c(1:3)
+vector = c(1:3)
+vector
+prueba
+prueba[vector,]
+prueba[-vector,]
+dim(training)
+set.seed(32343)
+prueba[-vector,]
+set.seed(32343)
+seed
+prueba = set.seed(32343)
+prueba
+type
+training
+head(training)
+class(training)
+modelFit = train(type ~., data=training, method="glm") # intento predecir la columna type
+warnings()
+modelFit
+modelFit$finalModel
+predictions = predict(modelFit, newdata=testing)
+predictions
+confusionMatrix(predictions, testing$type)
+library(caret)
+library(kernlab)
+data(spam)
+spam
+dim(spam)
+head(spam)
+inTrain = createDataPartition(y = spam$type, p=0.75, list=FALSE)
+dim(inTrain)
+dim(spam)
+inTrain
+training = spam[inTrain,]
+testing = spam[-inTrain,] #coge todos exceptuando los que esten en el vector inTrain
+dim(training)
+dim(testing)
+head(training)
+head(testing)
+set.seed(32343)
+modelFit = train(type ~., data=training, method="glm") # intento predecir la columna type
+class(modelFit)
+modelFit$finalModel
+predictions = predict(modelFit, newdata=testing)
+predictions
+confusionMatrix(predictions, testing$type)
+dim(predictions)
+predictions
+class(predictions)
+class(testing$type)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+library(swirl)
+swirl()
+swirl()
+Sys.Date()
+d1 = Sys.Date()
+d1 <- Sys.Date()
+class(d1)
+quit()
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#aprender R
+library(swirl)
+install.packages("Quandl")
+library("Quandl", lib.loc="~/R/win-library/3.1")
+library("ctv")
+install.views("MachineLearning")
+install.views("Optimization")
+install.views("SocialSciences")
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+install.packages("caret")
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+install.packages("brglm")
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+install.packages("lme4")
+library(RODBC)
+library(kernlab)
+library(caret)
+install.packages("quantreg")
+library(caret)
+library(caret)
+library(caret)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#aprender R
+library(swirl)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#aprender R
+library(swirl)
+#week1 - 002 - detectar spam en emails
+data(spam)
+head(spam)
+spam$your[spam$type=="nonspam"]
+plot( density(spam$your[spam$type=="nonspam"]), col="blue", main="", xlab="Frecuenci of 'your'" )
+lines( density(spam$your[spam$type=="spam"]), col="red" )
+abline(v=0.5, col="black")
+prediccion = ifelse(spam$your > 0.5, "spam", "nonspam")
+head(prediction)
+head(prediccion)
+length(prediccion)
+length(spam)
+dim(spam)
+class(prediccion)
+table(prediccion, spam$type)/length(spam$type)
+spam$type
+class(spam$type)
+class(prediccion)
+install.packages("manipulate")
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#aprender R
+library(swirl)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#aprender R
+library(swirl)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#aprender R
+library(swirl)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+#aprender R
+library(swirl)
+#entrada y salida de datos:
+library(RODBC)
+#machine learning:
+library(caret)
+library(kernlab)
+################################
+data(spam)
+inTrain = createDataPartition(y = spam$type, p=0.75, list=FALSE)
+training = spam[inTrain,]
+testing = spam[-inTrain,] #coge todos exceptuando los que esten en el vector inTrain
+dim(training)
+dim(testing)
+dim(spam)
+set.seed(32343)
+modelFit = train(type ~., data=training, method="glm") # intento predecir la columna type
+# ~. le permite usar todo tipo de variables del data.frame
+training
+head(training)
+class(training$type)
+modelFit
+modelFit$finalModel
+predictions = predict(modelFit, newdata=testing)
+predictions
+confusionMatrix(predictions, testing$type)
+data(spam)
+inTrain = createDataPartition(y = spam$type, p=0.75, list=FALSE)
+training = spam[inTrain,]
+testing = spam[-inTrain,] #coge todos exceptuando los que esten en el vector inTrain
+dim(training)
+folds = createFolds(y=spam$type, k=10, list=TRUE, returnTrain=TRUE)
+folds
+head(folds)
+class(folds)
+folds[1]
+class(folds[1])
+sapply(folds, length)
+dim(spam$type)
+dim(spam)
+folds = createFolds(y=spam$type, k=10, list=TRUE, returnTrain=TRUE)
+sapply(folds, length)
+folds[[1]][1:10]
+set.seed(32343)
+folds = createFolds(y=spam$type, k=10, list=TRUE, returnTrain=FALSE)
+class(folds) #hemos creado una lista
+sapply(folds, length)
+folds[[1]][1:10] #miro los 10 primeros elementos del primero fold a ver si corresponden con los primeros 10 u otros al azar
+#creamos un RESAMPLE
+set.seed(32343)
+folds = createResample(y=spam$type, times=10, list=TRUE)
+sapply(folds, length)
+folds[[1]][1:10]
+dim(spam)
+tme = 1:1000
+tme
+set.seed(32343)
+tme = 1:1000
+#initialWindow  - The initial number of consecutive values in each training set sample
+#horizon	- The number of consecutive values in test set sample
+folds = createTimeSlices(y=tme, initialWindow=20, horizon=10)
+names(folds)
+folds
+head(folds)
+folds$test
+folds$train
+folds$train[[1]]
+folds$test[[1]]
+data(spam)
+inTrain = createDataPartition(y = spam$type, p=0.75, list=FALSE)
+training = spam[inTrain,]
+testing = spam[-inTrain,] #coge todos exceptuando los que esten en el vector inTrain
+modelFit = train(type ~., data=training, method="glm") # intento predecir la columna type
+# ~. le permite usar todo tipo de variables del data.frame
+args(train.default)
+args(createTimeSlices.default)
+args(createResample.default)
+modelFit
+args(train.default)
+args(trainControl)
+set.seed(1235)
+modelFit2 = train(type ~., data=training, method="glm")
+modelFit2
+modelFit3 = train(type ~., data=training, method="glm")
+modelFit3
+install.packages("ISLR")
+install.packages("C:/Users/roman.gonzalez/Downloads/ISLR_1.0.zip", repos = NULL)
+library(ISLR)
+library(ggplot2)
+library(caret)
+data(wage)
+data(Wage)
+Wage
+head(Wage)
+summary(Wage)
+inTrain = createDataPartition(y = Wage$wage, p=0.7, list=FALSE)
+training = Wage[inTrain,]
+testing = Wage[-inTrain,]
+dim(training)
+dim(testing)
+dim(Wage)
+training$wage
+featurePlot(x=training[, c("age", "education", "jobclass")],
+y = training$wage,
+plot = "pairs")
+qplot(age, wage, data=training)
+qplot(age, wage, colour=jobclass, data=training)
+qq = qplot(age, wage, colour=education, data=training)
+qq
+qq + geom_smooth(method="lm", formula=x~y)
+qq + geom_smooth(method="lm", formula=y~x)
+library(Hmisc)
+library(Hmisc)
+cutWage = cut2(training$Wage, g=3)
+training$Wage
+training$wage
+cutWage = cut2(training$wage, g=3)
+cutWage
+head(cutWage)
+class(cutWage)
+head(training)
+p1 = qplot(cutWage, age, data=training, fill=cutWage, geom=c("boxplot"))
+p1
+p2 = qplot(cutWage, age, data=training, fill=cutWage, geom=c("boxplot", "jitter"))
+p2
+grid.arrange(p1, p2, ncol=2)
+install.packages("gridExtra")
+p2
+install.packages("gridExtra")
+library(gridExtra)
+grid.arrange(p1, p2, ncol=2)
+t1 = table(cutWage, training$jobclass)
+t1
+prop.table(t1, 1)
+prop.table(t1, 2)
+qplot(wage, colour=education, data=training, geom="density")
+data(spam)
+inTrain = createDataPartition(y = spam$type, p=0.75, list=FALSE)
+training = spam[inTrain,]
+testing = spam[-inTrain,]
+hist(training$capitalAve, main="", xlab="ave. capital run length")
+training$capitalAve
+mean(training$capitalAve)
+sd(training$capitalAve)
+trainCapAve = training$capitalAve
+trainCapAves = (trainCapAve - mean(trainCapAve))/sd(trainCapAve)
+mean(trainCapAves)
+sd(trainCapAves)
+testCapAve = testing$capitalAve
+testCapAveS = (testCapAve - mean(trainCapAve))/sd(trainCapAve)
+mean(testCapAveS)
+sd(testCapAveS)
+testCapAveS
+preObj = preProcess(training[,-58], method=c("center", "scale")) #proceso todas menos la variable número 58
+preObj
+mean(trainCapAveS)
+trainCapAve = training$capitalAve
+trainCapAveS = (trainCapAve - mean(trainCapAve))/sd(trainCapAve)
+mean(trainCapAveS)
+sd(trainCapAveS)
+testCapAve = testing$capitalAve
+testCapAveS = (testCapAve - mean(trainCapAve))/sd(trainCapAve) #para estandarizar la variable del test tenemos que usar la media y la sd
+#de la variable para el training set
+mean(testCapAveS)
+sd(testCapAveS)
+preObj = preProcess(training[,-58], method=c("center", "scale")) #proceso todas menos la variable número 58
+trainCapAveS = predict(preObj, training[,-58])$capitalAve
+mean(trainCapAveS)
+sd(trainCapAveS)
+testCapAveS = predict(preObj, testing[,-58])$capitalAve
+mean(testCapAveS)
+sd(testCapAveS)
+modelFit = train(type ~., data=training, method="glm", preProcess=c("center", "scale"))
+modelFit
+preObj = preProcess(training[,-58], method=c("BoxCox")) #proceso todas menos la variable número 58
+trainCapAveS = predict(preObj, training[,-58])$capitalAve
+par(mfrow=c(1,2))
+hist(trainCapAveS)
+qqnorm(trainCapAveS)
+qqnorm(trainCapAveS)
